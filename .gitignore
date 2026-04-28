@@ -1,0 +1,11 @@
+# Archives
+*.zip
+
+# Office lock files
+~$*.docx
+~$*.xlsx
+~$*.pptx
+
+# OS junk
+Thumbs.db
+.DS_Store
