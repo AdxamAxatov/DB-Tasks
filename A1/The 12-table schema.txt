@@ -1,0 +1,67 @@
+The 12-table schema
+
+  Country
+    country_id        INT            PK
+    country_name      VARCHAR(100)   NOT NULL UNIQUE
+
+  Region
+    region_id         INT            PK
+    region_name       VARCHAR(50)    NOT NULL UNIQUE
+
+  State
+    state_id          INT            PK
+    state_name        VARCHAR(50)    NOT NULL
+    country_id        INT            NOT NULL    FK → Country(country_id)
+    region_id         INT            NOT NULL    FK → Region(region_id)
+    UNIQUE (state_name, country_id)
+
+  City
+    city_id           INT            PK
+    city_name         VARCHAR(100)   NOT NULL
+    state_id          INT            NOT NULL    FK → State(state_id)
+    UNIQUE (city_name, state_id)
+
+  Category
+    category_id       INT            PK
+    category_name     VARCHAR(50)    NOT NULL UNIQUE
+
+  SubCategory
+    sub_category_id   INT            PK
+    sub_category_name VARCHAR(50)    NOT NULL
+    category_id       INT            NOT NULL    FK → Category(category_id)
+    UNIQUE (sub_category_name, category_id)
+
+  Product
+    product_id        VARCHAR(20)    PK
+    product_name      VARCHAR(255)   NOT NULL
+    sub_category_id   INT            NOT NULL    FK → SubCategory(sub_category_id)
+
+  Segment
+    segment_id        INT            PK
+    segment_name      VARCHAR(50)    NOT NULL UNIQUE
+
+  Customer
+    customer_id       VARCHAR(10)    PK
+    customer_name     VARCHAR(100)   NOT NULL
+    segment_id        INT            NOT NULL    FK → Segment(segment_id)
+
+  ShipMode
+    ship_mode_id      INT            PK
+    ship_mode_name    VARCHAR(50)    NOT NULL UNIQUE
+
+  Order
+    order_id          VARCHAR(20)    PK
+    order_date        DATE           NOT NULL
+    ship_date         DATE           NOT NULL
+    customer_id       VARCHAR(10)    NOT NULL    FK → Customer(customer_id)
+    ship_mode_id      INT            NOT NULL    FK → ShipMode(ship_mode_id)
+    city_id           INT            NOT NULL    FK → City(city_id)
+    CHECK (ship_date >= order_date)
+
+  OrderItem
+    order_item_id     INT            PK
+    order_id          VARCHAR(20)    NOT NULL    FK → Order(order_id)
+    product_id        VARCHAR(20)    NOT NULL    FK → Product(product_id)
+    quantity          INT            NOT NULL    CHECK (quantity > 0)
+    sales             DECIMAL(10,2)  NOT NULL
+    profit            DECIMAL(10,2)  NOT NULL
